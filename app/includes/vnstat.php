@@ -87,12 +87,14 @@ class vnStat {
 	public function getInterfaceData($timeperiod, $type, $interface) {
 		// If json version equals 1, add an 's' onto the end of each type.
 		// e.g. 'top' becomes 'tops'
+		$typeAppend = '';
 		if ($this->vnstatJsonVersion == 1) {
 			$typeAppend = 's';
 		}
 
 		// Blank placeholder
 		$trafficData = [];
+		$i = 0;
 
 		// Get the array index for the chosen interface
 		$arrayIndex = array_search($interface, array_column($this->vnstatData['interfaces'], 'name'));
@@ -133,7 +135,7 @@ class vnStat {
 					}
 				}
 
-                                usort($trafficData, sortingFunction);
+                                usort($trafficData, 'sortingFunction');
 
 			} else if ($type == 'graph') {
 				foreach ($this->vnstatData['interfaces'][$arrayIndex]['traffic']['hour'.$typeAppend] as $traffic) {
