@@ -23,11 +23,19 @@ require __DIR__ . '/includes/vnstat.php';
 require __DIR__ . '/includes/utilities.php';
 require __DIR__ . '/includes/config.php';
 
-// Initiaite vnStat class
+use Smarty\Smarty;
+
+// Initiate vnStat class
 $vnstat = new vnStat($vnstat_bin_dir);
 
 // Initiate Smarty
 $smarty = new Smarty();
+
+// Configure template, compile, cache, and config directories (Smarty 5 requires explicit setup)
+$smarty->setTemplateDir(__DIR__ . '/templates/');
+$smarty->setCompileDir(__DIR__ . '/templates_c/');
+$smarty->setCacheDir(__DIR__ . '/cache/');
+$smarty->setConfigDir(__DIR__ . '/configs/');
 
 // Set the current year
 $smarty->assign('year', date("Y"));
@@ -50,7 +58,6 @@ if (isset($_GET['i'])) {
     // Assume they mean the first interface
     $thisInterface = reset($interface_list);
 }
-
 
 $smarty->assign('current_interface', $thisInterface);
 
@@ -84,6 +91,4 @@ $smarty->assign('monthlyGraphData', $monthlyGraphData);
 $smarty->assign('monthlyLargestPrefix', $monthlyGraphData[1]['delimiter']);
 
 // Display the page
-$smarty->display('templates/site_index.tpl');
-
-?>
+$smarty->display('site_index.tpl');
